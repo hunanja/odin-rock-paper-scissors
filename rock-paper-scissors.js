@@ -33,10 +33,36 @@ function playRound(playerSelection, computerSelection) {  // Plays one round of 
 }
 
 function playGame(rounds = 5) {  // Loop for playing rounds of rock-paper-scissors.
+    let playerPoints = 0
+    let computerPoints = 0 
     for (let i = 0; i < rounds; i++) {
         let playerSelection = prompt("Choose rock, paper, or scissors!")
         let computerSelection = getComputerChoice()
         console.log(playRound(playerSelection, computerSelection))
+        if (pointCounter(playRound(playerSelection, computerSelection)) === "win") {
+            playerPoints++
+        } else if (pointCounter(playRound(playerSelection, computerSelection)) === "lose") {
+            computerPoints++
+        }
+    }
+    console.log(endResult(playerPoints, computerPoints))
+}
+
+function pointCounter(string) {  // Counts points from each round.
+    if (string.includes("You win!")) {
+        return "win"
+    } else if (string.includes("You lose!")) {
+        return "lose"
+    } return
+}
+
+function endResult(playerPoints, computerPoints) { // Compares the points and returns the end result.
+    if (playerPoints > computerPoints) {
+        return "You won the whole game!"
+    } else if (playerPoints < computerPoints) {
+        return "You lost the whole game!"
+    } else {
+        return "Tie!"
     }
 }
 
