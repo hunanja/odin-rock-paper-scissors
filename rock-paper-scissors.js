@@ -32,21 +32,59 @@ function playRound(playerSelection, computerSelection) {  // Plays one round of 
     }
 }
 
-function playGame(rounds = 5) {  // Loop for playing rounds of rock-paper-scissors
-    let playerPoints = 0
-    let computerPoints = 0 
-    for (let i = 0; i < rounds; i++) {
-        let playerSelection = prompt("Choose rock, paper, or scissors!")
-        let computerSelection = getComputerChoice()
-        console.log(playRound(playerSelection, computerSelection))  // Prints each rounds result in the console
+const buttonContainer = document.querySelector("#buttonContainer");  // Creates buttons for rock, paper, and scissors
+const rock = document.createElement("button");
+const paper = document.createElement("button");
+const scissors = document.createElement("button");
 
-        if (pointCounter(playRound(playerSelection, computerSelection)) === "win") {  // Adds points depending of the result
-            playerPoints++
-        } else if (pointCounter(playRound(playerSelection, computerSelection)) === "lose") {
-            computerPoints++
-        }
+rock.textContent = "ROCK";
+paper.textContent = "PAPER";
+scissors.textContent = "SCISSORS";
+
+buttonContainer.appendChild(rock);
+buttonContainer.appendChild(paper);
+buttonContainer.appendChild(scissors);
+
+const results = document.querySelector("#results"); // Creates container for game results shown in the webpage
+let roundResult = document.createElement("p");
+let gameResult = document.createElement("h2");
+results.appendChild(roundResult);
+results.appendChild(gameResult);
+let playerScore = document.createElement("p");
+let computerScore = document.createElement("p");
+results.appendChild(playerScore);
+results.appendChild(computerScore);
+
+let playerSelection = "";  // Default values before the game is played
+let playerPoints = 0;
+let computerPoints = 0;
+
+rock.addEventListener("click", () => {
+    playerSelection = "rock";
+    playGame()
+});
+paper.addEventListener("click", () => {
+    playerSelection = "paper";
+    playGame()
+});
+scissors.addEventListener("click", () => {
+    playerSelection = "scissors";
+    playGame()
+});
+
+function playGame() {  // Plays one round of rps and updates all the necessary variables etc.
+    let computerSelection = getComputerChoice()
+
+    roundResult.textContent = playRound(playerSelection, computerSelection)  // Prints each rounds result on the webpage
+
+    if (pointCounter(playRound(playerSelection, computerSelection)) === "win") {  // Adds points depending of the result
+        playerPoints++
+    } else if (pointCounter(playRound(playerSelection, computerSelection)) === "lose") {
+        computerPoints++
     }
-    console.log(endResult(playerPoints, computerPoints))  // Prints the end result of the game in the console
+    playerScore.textContent = `Your points: ${playerPoints}`;
+    computerScore.textContent = `Computers points: ${computerPoints}`;
+    endResult(playerPoints, computerPoints);
 }
 
 function pointCounter(string) {  // Counts points from each round
@@ -58,13 +96,9 @@ function pointCounter(string) {  // Counts points from each round
 }
 
 function endResult(playerPoints, computerPoints) { // Compares the points and returns the end result
-    if (playerPoints > computerPoints) {
-        return "You won the whole game!"
-    } else if (playerPoints < computerPoints) {
-        return "You lost the whole game!"
-    } else {
-        return "Tie!"
+    if (playerPoints == 5) {
+        gameResult.textContent = "You won the whole game!";
+    } else if (computerPoints == 5) {
+        gameResult.textContent = "You lost the whole game!";
     }
 }
-
-playGame()
